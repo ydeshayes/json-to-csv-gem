@@ -11,7 +11,7 @@ class JsonToCsv
   def self.extractKeys(hash = {}, parentsName = "")
     hash.each_with_object([]) do |(k,v),keys|
       if v.is_a? Hash
-        keys.concat(self.extractKeys(v, k + "."))
+        keys.concat(self.extractKeys(v, parentsName + k + "."))
       else
         keys << parentsName + k
       end
