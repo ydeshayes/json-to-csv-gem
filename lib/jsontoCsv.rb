@@ -17,8 +17,6 @@ class JsonToCsv
       end
     end
   end
-<<<<<<< Updated upstream
-=======
 
   # Extract values from a hash, will concat array values
   # with a ,
@@ -28,11 +26,10 @@ class JsonToCsv
       if v.is_a? Hash
         values.concat(self.extractValues(v))
       elsif v.kind_of? Array
-        values << v.join(',')
+        values << '"' + v.join(',') + '"'
       else
         values << v
       end
     end
   end
->>>>>>> Stashed changes
 end
