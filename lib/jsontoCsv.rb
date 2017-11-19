@@ -1,4 +1,5 @@
 require 'json'
+require 'csv'
 
 class JsonToCsv
   # Convert a json array string to csv
@@ -7,13 +8,15 @@ class JsonToCsv
     hash = JSON.parse(json)
     keys = self.extractKeys(hash.first)
     lines = hash.each_with_object([]) do |(k,v),values|
-      values << self.extractValues(k).join(",")
+      values << self.extractValues(k)
     end
 
-    csv = keys.join(",") + "\n"
-    csv << lines.join("\n")
-
-    return csv
+    return CSV.generate do |csv|
+      csv << keys
+      lines.each .each do |line|
+        csv << line
+      end
+    end
   end
 
   # Extract keys from a hash, will concat nested keys
@@ -37,7 +40,7 @@ class JsonToCsv
       if v.is_a? Hash
         values.concat(self.extractValues(v))
       elsif v.kind_of? Array
-        values << '"' + v.join(',') + '"'
+        values << v.join(',')
       else
         values << v
       end
