@@ -1,8 +1,19 @@
+require 'json'
+
 class JsonToCsv
   # Convert a json array string to csv
   # return string
   def self.convert(json = "[]")
-    puts "Hello word2"
+    hash = JSON.parse(json)
+    keys = self.extractKeys(hash.first)
+    lines = hash.each_with_object([]) do |(k,v),values|
+      values << self.extractValues(k).join(",")
+    end
+
+    csv = keys.join(",") + "\n"
+    csv << lines.join("\n")
+
+    return csv
   end
 
   # Extract keys from a hash, will concat nested keys
