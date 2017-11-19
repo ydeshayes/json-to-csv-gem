@@ -6,6 +6,9 @@ class JsonToCsv
   # return string
   def self.convert(json = "[]")
     hash = JSON.parse(json)
+
+    raise "Empty array" if hash.first.nil?
+
     keys = self.extractKeys(hash.first)
     lines = hash.each_with_object([]) do |(k,v),values|
       values << self.extractValues(k)
